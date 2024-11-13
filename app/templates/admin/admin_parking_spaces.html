@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Espacios de Estacionamiento</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/admin_parking_spaces.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="Logo">
+            <span class="logo-text">ApeParking</span>
+        </div>
+        <nav>
+            <a href="/admin/view_parking_spaces">Estacionamiento</a>
+            <a href="/admin/manage_users">Usuarios</a>
+            <a href="/admin/manage_reservations">Reservas</a>
+            <a href="/logout">Cerrar sesión</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="welcome">Gestión de Espacios de Estacionamiento</h1>
+        <a href="/admin/add_parking_space" class="button">Agregar Espacio</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Piso</th>
+                    <th>Espacio</th>
+                    <th>Estado</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for space in parking_spaces %}
+                <tr>
+                    <td class="id-column">{{ space._id }}</td>
+                    <td>{{ space.piso }}</td>
+                    <td>{{ space.espacio }}</td>
+                    <td>{{ space.estado }}</td>
+                    <td>{{ space.tipo }}</td>
+                    <td class="action-buttons">
+                        <a href="/admin/edit_parking_space/{{ space._id }}" class="table-button table-button-secondary">Editar</a>
+                        <form action="/admin/delete_parking_space/{{ space._id }}" method="post" style="display:inline;">
+                            <button type="submit" class="table-button">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

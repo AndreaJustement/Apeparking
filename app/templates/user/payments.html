@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pagos</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+</head>
+<body>
+
+<div class="header">
+    <img src="/static/images/logo.png" alt="Logo" class="logo">
+    <span class="logo-text">ApeParking</span>
+    <nav>
+        <a href="/user/dashboard">Dashboard</a>
+        <a href="/user/reservations">Reservas</a>
+        <a href="/user/payments">Pagos</a>
+        <a href="/auth/logout">Cerrar sesión</a>
+    </nav>
+</div>
+
+<div class="container">
+    <h1>Gestión de Pagos</h1>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pago in pagos %}
+            <tr>
+                <td>{{ pago.id }}</td>
+                <td>{{ pago.amount }}</td>
+                <td>{{ pago.date }}</td>
+                <td>
+                    <form action="/user/payments/pay/{{ pago.id }}" method="post">
+                        <button type="submit" class="button">Pagar Ahora</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+</head>
+<body>
+
+<div class="header">
+    <img src="/static/images/logo.png" alt="Logo" class="logo">
+    <span class="logo-text">ApeParking</span>
+    <nav>
+        <a href="/user/dashboard">Dashboard</a>
+        <a href="/user/reservations">Reservas</a>
+        <a href="/user/payments">Pagos</a>
+        <a href="/auth/logout">Cerrar sesión</a>
+    </nav>
+</div>
+
+<div class="container">
+    <h1>Perfil de Usuario</h1>
+    <form action="/user/update_profile" method="post">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit" class="button">Actualizar</button>
+    </form>
+    <form action="/user/delete_account" method="post" style="margin-top: 20px;">
+        <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar tu cuenta?')">Eliminar Cuenta</button>
+    </form>
+</div>
+
+</body>
+</html>

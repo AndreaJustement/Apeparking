@@ -1,0 +1,115 @@
+/* style_user_dashboard.css */
+
+/* Fondo general */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../images/fondo.jpg");
+    background-size: cover;
+    margin: 0;
+    padding-top: 60px; /* Espacio para el encabezado fijo */
+}
+
+/* Estilo del encabezado fijo */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color:  #004080;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Asegura que el encabezado esté al frente */
+}
+
+.header img {
+    width: 50px;
+    margin-right: 10px;
+}
+
+.header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.header nav {
+    display: flex;
+    gap: 15px;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header nav a:hover {
+    color: #ff6600;
+}
+/* Ajuste de color del texto del logo */
+.logo-text {
+    color: #ffffff; /* Color blanco o cualquier otro color que prefieras */
+    font-weight: bold;
+    font-size: 24px; /* Ajusta el tamaño si es necesario */
+}
+
+/* Bienvenida */
+.welcome {
+    font-size: 2rem;
+    color: #004080;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Descripción */
+.description {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Estilo de las tarjetas */
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* Permite ajuste en pantallas pequeñas */
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px; /* Espacio entre filas en dispositivos pequeños */
+}
+
+.card h2 {
+    color: #004080;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.card button {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.card button:hover {
+    background-color: #cc5200;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Reservas y Pagos</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+</head>
+<body>
+
+<div class="header">
+    <img src="/static/images/logo.png" alt="Logo" class="logo">
+    <span class="logo-text">ApeParking</span>
+    <nav>
+        <a href="/user/dashboard">Dashboard</a>
+        <a href="/user/reservations">Reservas</a>
+        <a href="/user/payments">Pagos</a>
+        <a href="/auth/logout">Cerrar sesión</a>
+    </nav>
+</div>
+
+<div class="container">
+    <h1>Historial de Reservas</h1>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Espacio</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in historial_reservas %}
+            <tr>
+                <td>{{ reserva.id }}</td>
+                <td>{{ reserva.space }}</td>
+                <td>{{ reserva.start_time }}</td>
+                <td>{{ reserva.end_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Historial de Pagos</h1>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID de Pago</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pago in historial_pagos %}
+            <tr>
+                <td>{{ pago.id }}</td>
+                <td>{{ pago.amount }}</td>
+                <td>{{ pago.date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

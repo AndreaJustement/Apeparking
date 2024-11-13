@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/manage_users.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="logo-container">
+        <img src="/static/images/logo.png" alt="Logo">
+        <span class="logo-text">ApeParking</span>
+    </div>
+    <nav>
+        <a href="/admin/dashboard">Volver al Dashboard</a>
+        <a href="/admin/manage_users">Usuarios</a>
+        <a href="/reservations">Reservas</a>
+        <a href="/logout">Cerrar sesión</a>
+    </nav>
+</div>
+
+<div class="container">
+    <h1>Gestión de Usuarios</h1>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in usuarios %}
+            <tr>
+                <td>{{ user._id }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <!-- Botón de eliminar sin usar url_for -->
+                    <form action="/admin/delete_user/{{ user._id }}" method="post" style="display:inline;">
+                        <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

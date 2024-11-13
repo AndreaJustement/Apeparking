@@ -1,0 +1,122 @@
+/* Fondo general */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../images/fondo.jpg");
+    background-size: cover;
+    margin: 0;
+    padding-top: 60px; /* Espacio para el encabezado fijo */
+}
+
+/* Estilo del encabezado */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #004080;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.header .logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.header .logo-container img {
+    width: 40px;
+    margin-right: 10px;
+}
+
+.header .logo-text {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.header nav a {
+    margin-left: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header nav a:hover {
+    color: #ff7f00;
+}
+
+/* Contenedor principal */
+.container {
+    margin: 100px auto 0 auto; /* Ajuste para que el contenido no se oculte tras el encabezado */
+    max-width: 1000px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Estilos del título */
+h1 {
+    color: #004080;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+/* Estilos de la tabla de usuarios */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-table th, .user-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.user-table th {
+    background-color: #004080;
+    color: white;
+    font-weight: bold;
+}
+
+.user-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.user-table tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* Estilo del botón de eliminar */
+.delete-button {
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #e60000;
+}
+
+/* Ajustes adicionales */
+.logo-text {
+    color: #ffffff;
+}
+
+.container h1 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+

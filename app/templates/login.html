@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style_login.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        
+        <!-- Bloque para mostrar mensajes de error -->
+        {% if request.query_params.error == 'token_expired' %}
+            <p style="color: red;">Tu sesión ha expirado. Por favor, inicia sesión nuevamente.</p>
+        {% elif request.query_params.error == 'token_not_found' %}
+            <p style="color: red;">No se encontró un token de sesión. Por favor, inicia sesión.</p>
+        {% elif request.query_params.error == 'invalid_token' %}
+            <p style="color: red;">El token de sesión no es válido. Por favor, inicia sesión.</p>
+        {% elif request.query_params.error == 'user_not_found' %}
+            <p style="color: red;">No se encontró tu usuario. Por favor, inicia sesión.</p>
+        {% endif %}
+
+        <!-- Formulario de inicio de sesión -->
+        <form action="/login" method="post">
+            <label>Email:</label>
+            <input type="email" name="email" required>
+            <label>Contraseña:</label>
+            <input type="password" name="contrasena" required>
+            <button type="submit">Iniciar sesión</button>
+        </form>
+
+        <a href="/ayuda" class="support-link">¿Olvidaste tu contraseña?</a>
+        <p>¿No tienes cuenta? <a href="/register">Regístrate aquí.</a></p>
+    </div>
+</body>
+</html>

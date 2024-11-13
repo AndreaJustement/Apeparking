@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: apeparking-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - apeparking_mongo_data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: apeparking-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - apeparking_redis_data:/data
+
+  app:
+    build: .
+    container_name: apeparking-app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+    - C:/ApeParking:/app
+
+    depends_on:
+      - mongodb
+      - redis
+
+volumes:
+  apeparking_mongo_data:
+  apeparking_redis_data:
+
+

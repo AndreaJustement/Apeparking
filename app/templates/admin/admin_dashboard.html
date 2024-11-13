@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Administración</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/admin_dashboard.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="Logo" class="logo-icon">
+        </div>
+        <div class="logo-text">ApeParking</div>
+        <nav>
+            <a href="/admin/view_parking_spaces">Estacionamiento</a>
+            <a href="/admin/manage_users">Usuarios</a>
+            <a href="/admin/manage_reservations">Reservas</a>
+            <a href="/logout">Cerrar sesión</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main>
+            <h1 class="welcome">Bienvenido a tu Dashboard de Administrador</h1>
+            <p class="description">Aquí puedes gestionar el estacionamiento, usuarios y reservas de manera eficiente.</p>
+            <div class="card-container">
+                <div class="card">
+                    <h2>Estacionamiento</h2>
+                    <a href="/admin/view_parking_spaces" class="button">Ver Espacios</a>
+                    <a href="/admin/add_parking_space" class="button">Agregar Espacio</a>
+                </div>
+                <div class="card">
+                    <h2>Usuarios</h2>
+                    <a href="/admin/manage_users" class="button">Ver Usuarios</a>
+                </div>
+                <div class="card">
+                    <h2>Reservas</h2>
+                    <a href="/admin/manage_reservations" class="button">Ver Reservas</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

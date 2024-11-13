@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Nuevo Espacio de Estacionamiento</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/add_parking_space.css">
+
+</head>
+<body>
+   <header class="header">
+    <div class="logo">
+        <img src="/static/images/logo.png" alt="Logo">
+        <span class="logo-text">ApeParking</span>
+    </div>
+    <nav>
+        <a href="/admin/view_parking_spaces">Estacionamiento</a>
+        <a href="/admin/manage_users">Usuarios</a>
+        <a href="/admin/manage_reservations">Reservas</a>
+        <a href="/logout">Cerrar sesión</a>
+    </nav>
+</header>
+    <main class="container">
+        <h1>Agregar Nuevo Espacio de Estacionamiento</h1>
+        <form action="/admin/add_parking_space" method="post" class="form">
+            <div class="form-group">
+                <label for="floor">Piso:</label>
+                <input type="text" id="floor" name="floor" required>
+            </div>
+            <div class="form-group">
+                <label for="space_number">Espacio:</label>
+                <input type="text" id="space_number" name="space_number" required>
+            </div>
+            <div class="form-group">
+                <label for="tipo">Tipo:</label>
+                <input type="text" id="tipo" name="tipo" required>
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado:</label>
+                <select id="estado" name="estado">
+                    <option value="Disponible">Disponible</option>
+                    <option value="Ocupado">Ocupado</option>
+                </select>
+            </div>
+            <button type="submit" class="button submit-button">Agregar Espacio</button>
+        </form>
+        <a href="/admin/view_parking_spaces" class="back-link">Volver a la lista de espacios</a>
+    </main>
+</body>
+</html>

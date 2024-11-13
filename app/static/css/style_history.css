@@ -1,0 +1,41 @@
+/* style_history.css */
+
+.history-container {
+    margin-top: 50px;
+    background-color: var(--color-blanco);
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* Título */
+.history-container h2 {
+    color: var(--color-azul);
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Tabla de historial */
+.history-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.history-container th, .history-container td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.history-container th {
+    background-color: var(--color-azul);
+    color: var(--color-blanco);
+}
+
+.history-container tr:nth-child(even) {
+    background-color: var(--color-gris-claro);
+}

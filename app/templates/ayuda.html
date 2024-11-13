@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayuda y Preguntas Frecuentes</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style_ayuda.css') }}">
+</head>
+<body>
+    <div class="faq-container">
+        <h1>Ayuda y Preguntas Frecuentes (FAQ)</h1>
+        
+        <section class="faq-section">
+            <h2>Preguntas Frecuentes</h2>
+            
+            <div class="faq-item">
+                <h3>1. ¿Cómo puedo crear una cuenta?</h3>
+                <p>Para crear una cuenta, haz clic en el botón "Registrarse" en la página principal. Completa el formulario con tu correo electrónico y una contraseña segura.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>2. ¿Cómo puedo cambiar mi contraseña?</h3>
+                <p>Puedes cambiar tu contraseña desde la sección de "Perfil" una vez que hayas iniciado sesión. Si has olvidado tu contraseña, sigue las indicaciones más abajo.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>3. ¿Cómo puedo hacer una reserva de estacionamiento?</h3>
+                <p>Una vez que hayas iniciado sesión, ve a la sección de "Reservas" en tu dashboard. Allí podrás seleccionar una plaza de estacionamiento disponible y confirmar tu reserva.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>4. ¿Qué hago si olvido mi contraseña?</h3>
+                <p>Si has olvidado tu contraseña, por favor <a href="/contacto" class="support-link">ponte en contacto con soporte técnico</a> para recibir asistencia. Te ayudaremos a restablecerla lo antes posible.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>5. ¿Es seguro proporcionar mis datos personales?</h3>
+                <p>Sí, la seguridad de tus datos es nuestra prioridad. Utilizamos tecnología de encriptación y medidas avanzadas para proteger tu información.</p>
+            </div>
+        </section>
+        
+        <section class="support-section">
+            <h2>Contacto con Soporte Técnico</h2>
+            <p>Si no puedes acceder a tu cuenta o tienes problemas técnicos, por favor <a href="/contacto" class="support-link">ponte en contacto con nuestro equipo de soporte técnico</a>. Te responderemos a la mayor brevedad posible.</p>
+        </section>
+    </div>
+</body>
+</html>

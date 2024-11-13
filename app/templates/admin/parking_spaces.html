@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacios de Estacionamiento</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}?v=1.0">
+
+</head>
+<body>
+    <h1>Espacios de Estacionamiento</h1>
+    <p>Aquí puedes ver y gestionar los espacios de estacionamiento.</p>
+    <a href="/dashboard">Volver al Dashboard</a>
+    <ul>
+        <!-- Aquí puedes iterar sobre una lista de espacios con Jinja -->
+        {% for espacio in espacios %}
+        <li>{{ espacio.nombre }} - Estado: {{ espacio.estado }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

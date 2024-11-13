@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacios de Estacionamiento</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style_admin_dashboard.css') }}">
+</head>
+<body>
+    <h1>Gestión de Espacios de Estacionamiento</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Piso</th>
+                <th>Espacio</th>
+                <th>Estado</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for space in parking_spaces %}
+            <tr>
+                <td>{{ space.piso }}</td>
+                <td>{{ space.espacio }}</td>
+                <td>{{ space.estado }}</td>
+                <td>{{ space.tipo }}</td>
+                <td>
+                    <a href="/admin/edit_parking_space/{{ space._id }}">Editar</a>
+                    <a href="/admin/delete_parking_space/{{ space._id }}" onclick="return confirm('¿Seguro que deseas eliminar este espacio?')" style="color: red;">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><a href="/admin/dashboard">Volver al Dashboard de Administración</a></p>
+</body>
+</html>
