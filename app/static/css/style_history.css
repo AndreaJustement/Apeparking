@@ -1,41 +1,109 @@
-/* style_history.css */
-
-.history-container {
-    margin-top: 50px;
-    background-color: var(--color-blanco);
-    border-radius: 10px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: left;
+/* Fondo general */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../images/fondo.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding-top: 60px;
 }
 
-/* Título */
-.history-container h2 {
-    color: var(--color-azul);
-    font-size: 2em;
+/* Encabezado fijo */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #004080;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon {
+    width: 50px;
+    margin-right: 8px;
+}
+
+.logo-text {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* Navegación */
+.header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.header nav a:hover {
+    color: #ff6600;
+}
+
+/* Contenedor principal del historial */
+.history-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: 100px auto;
+    text-align: center;
+}
+
+.history-container h1 {
+    font-size: 2rem;
+    color: #004080;
     margin-bottom: 20px;
 }
 
-/* Tabla de historial */
-.history-container table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.history-container p {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 30px;
 }
 
-.history-container th, .history-container td {
-    padding: 12px;
+/* Lista de historial */
+.history-list {
     text-align: left;
-    border-bottom: 1px solid #ccc;
 }
 
-.history-container th {
-    background-color: var(--color-azul);
-    color: var(--color-blanco);
+.history-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 15px;
 }
 
-.history-container tr:nth-child(even) {
-    background-color: var(--color-gris-claro);
+.history-item h3 {
+    color: #004080;
+    margin: 0;
+}
+
+.history-item p {
+    margin: 5px 0;
+}
+
+.history-item small {
+    color: #666;
 }

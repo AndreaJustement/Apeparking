@@ -4,47 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Usuario</title>
-    <link rel="stylesheet" href="/static/css/global.css">
-    <link rel="stylesheet" href="/static/css/style_user_dashboard.css">
+    <link rel="stylesheet" href="/static/css/user_dashboard.css">
 </head>
 <body>
-
-<div class="header">
-    <img src="/static/images/logo.png" alt="Logo">
-    <span class="logo-text">ApeParking</span>
-    <nav>
-        <a href="/user/profile">Perfil</a>
-        <a href="/user/history">Historial</a>
-        <a href="/reservations">Reservas</a>
-        <a href="/user/payments">Pagos</a>
-        <a href="/logout">Cerrar sesión</a>
-
-    </nav>
-</div>
-
-<div class="container">
-    <div class="welcome">Bienvenido a tu Dashboard</div>
-    <div class="description">Aquí puedes gestionar tus reservas, pagos y datos de usuario.</div>
-
-    <div class="card-container">
-        <div class="card">
-            <h2>Reseva</h2>
-            <p>No te quedes sin lugar!</p>
-            <a href="/reservations"><button>Reservar Aquí!</button></a>
-
+    <!-- Encabezado fijo con logo y navegación -->
+    <header class="header">
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="Logo" class="logo-icon">
+            <span class="logo-text">ApeParking</span>
         </div>
-        <div class="card">
-            <h2>Pagos</h2>
-            <p>Revisa tus pagos realizados y realiza nuevos pagos de forma segura.</p>
-            <a href="/user/payments"><button>Ver Pagos</button></a>
+        <nav>
+            <ul>
+                <li><a href="/reservations">Reservas</a></li>
+                <li><a href="/user/payments">Pagos</a></li>
+                <li><a href="/user/history">Historial</a></li>
+                <li><a href="/logout">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Contenedor principal del Dashboard -->
+    <main class="dashboard-container">
+        <h1>Bienvenido a tu Dashboard</h1>
+        <p class="description">Aquí puedes gestionar tus reservas, pagos y datos de usuario.</p>
+        
+        <div class="card-container">
+            <div class="card">
+                <h2>Reservas</h2>
+                <p>Gestiona tus reservas de parking de manera fácil y rápida.</p>
+                <a href="/reservations" class="button">Ver Reservas</a>
+            </div>
+            <div class="card">
+                <h2>Pagos</h2>
+                <p>Revisa tus pagos realizados y realiza nuevos pagos de forma segura.</p>
+                <a href="/payments" class="button">Ver Pagos</a>
+            </div>
+            <div class="card">
+                <h2>Perfil</h2>
+                <p>Actualiza tu información personal y preferencias.</p>
+                <a href="/profile" class="button">Ver Perfil</a>
+            </div>
         </div>
-        <div class="card">
-            <h2>Perfil</h2>
-            <p>Actualiza tu información personal y preferencias.</p>
-            <a href="/user/profile"><button>Ver Perfil</button></a>
-        </div>
-    </div>
-</div>
-
+    </main>
 </body>
 </html>

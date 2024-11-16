@@ -3,65 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial de Reservas y Pagos</title>
+    <title>Historial</title>
     <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/history.css">
 </head>
 <body>
+    <!-- Encabezado fijo -->
+    <header class="header">
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="Logo" class="logo-icon">
+            <div class="logo-text">ApeParking</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/reservations">Reservas</a></li>
+                <li><a href="/user/payments">Pagos</a></li>
+                <li><a href="/user/history">Historial</a></li>
+                <li><a href="/logout">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<div class="header">
-    <img src="/static/images/logo.png" alt="Logo" class="logo">
-    <span class="logo-text">ApeParking</span>
-    <nav>
-        <a href="/user/dashboard">Dashboard</a>
-        <a href="/user/reservations">Reservas</a>
-        <a href="/user/payments">Pagos</a>
-        <a href="/auth/logout">Cerrar sesión</a>
-    </nav>
-</div>
+    <main>
+        <section class="history-container">
+            <h1>Historial de Actividades</h1>
+            <p>Aquí puedes revisar tus reservas y actividades previas.</p>
 
-<div class="container">
-    <h1>Historial de Reservas</h1>
-    <table class="user-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Espacio</th>
-                <th>Inicio</th>
-                <th>Fin</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for reserva in historial_reservas %}
-            <tr>
-                <td>{{ reserva.id }}</td>
-                <td>{{ reserva.space }}</td>
-                <td>{{ reserva.start_time }}</td>
-                <td>{{ reserva.end_time }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h1>Historial de Pagos</h1>
-    <table class="user-table">
-        <thead>
-            <tr>
-                <th>ID de Pago</th>
-                <th>Monto</th>
-                <th>Fecha</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pago in historial_pagos %}
-            <tr>
-                <td>{{ pago.id }}</td>
-                <td>{{ pago.amount }}</td>
-                <td>{{ pago.date }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
+            <div class="history-list">
+                {% for item in history %}
+                    <div class="history-item">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.description }}</p>
+                        <p><small>Fecha: {{ item.date }}</small></p>
+                    </div>
+                {% else %}
+                    <p>No tienes actividades en el historial.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
 </body>
 </html>

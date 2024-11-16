@@ -1,0 +1,151 @@
+/* Fondo general */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../images/fondo.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding-top: 60px; /* Espacio para el encabezado fijo */
+}
+
+/* Encabezado fijo */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #004080;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon {
+    width: 60px;
+    margin-right: 8px; /* Ajuste sutil en el margen del logo */
+}
+
+.logo-text {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* Navegación */
+.header nav {
+    margin-right:30px; /* Ajuste sutil para traer los enlaces hacia la izquierda */
+}
+
+.header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 18px; /* Ajuste sutil en el espacio entre los enlaces */
+}
+
+.header nav ul li {
+    display: inline;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.header nav a:hover {
+    color: #ff6600; /* Cambia el texto a naranja al pasar el mouse */
+}
+
+/* Contenedor principal del Dashboard */
+.dashboard-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 1200px;
+    margin: 100px auto 20px; /* Espacio superior ajustado */
+    text-align: center;
+}
+
+
+/* Título y descripción */
+h1 {
+    font-size: 2rem;
+    color: #004080;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Estilo de las tarjetas */
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    color: #004080;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.card p {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Botón estilo naranja */
+.button {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #cc5200;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}

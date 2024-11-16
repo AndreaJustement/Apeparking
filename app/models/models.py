@@ -20,19 +20,6 @@ class ParkingSpace(BaseModel):
         }
         allow_population_by_field_name = True
 
-# Modelo de Reservas
-class Reservation(BaseModel):
-    user_id: ObjectId
-    parking_space_id: ObjectId
-    start_time: datetime
-    end_time: datetime
-    status: str
-    reservation_expiration: datetime
-
-    class Config:
-        json_encoders = {
-            ObjectId: str
-        }
 
 # Modelo de Pagos
 class Payment(BaseModel):
@@ -64,7 +51,6 @@ class AdminActionLog(BaseModel):
 
 
 
-
 class Reservation(BaseModel):
     user_id: ObjectId
     parking_space_id: ObjectId
@@ -72,6 +58,18 @@ class Reservation(BaseModel):
     end_time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc) + timedelta(hours=1))
     status: str
     reservation_expiration: datetime = Field(default_factory=lambda: datetime.now(timezone.utc) + timedelta(days=1))
+
+    class Config:
+        json_encoders = {
+            ObjectId: str
+        }
+
+# Modelo de Historial
+class HistoryModel(BaseModel):
+    user_id: ObjectId
+    title: str
+    description: str
+    date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Config:
         json_encoders = {

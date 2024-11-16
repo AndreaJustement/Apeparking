@@ -3,84 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservas - ApeParking</title>
-    <link rel="stylesheet" href="/static/css/global.css">
-    <link rel="stylesheet" href="/static/css/reservation.css">
+    <title>Reservas del Usuario</title>
+    <link rel="stylesheet" href="/static/css/style_user_dashboard.css">
 </head>
 <body>
+    <header class="header">
+        <div>
+            <img src="/static/images/logo.png" alt="Logo">
+            <span class="logo-text">ApeParking</span>
+        </div>
+        <nav>
+            <a href="{{ url_for('user_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('view_reservations_page', user_id=user_id) }}">Ver Reservas</a>
+            <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+        </nav>
+    </header>
 
-<!-- Encabezado Fijo -->
-<div class="header">
-    <img src="/static/images/logo.png" alt="Logo" class="logo">
-    <span class="logo-text">ApeParking</span>
-    <nav>
-        <a href="/dashboard">Volver al Dashboard</a>
-        <a href="/logout">Cerrar sesión</a>
-    </nav>
-</div>
+    <main>
+        <h1>Reservas del Usuario</h1>
 
-<!-- Contenedor Principal -->
-<div class="container">
-    <h1>Gestión de Reservas</h1>
-
-    <!-- Tabla de Reservas Actuales -->
-    <div class="table-section">
-        <h2>Reservas Actuales</h2>
-        <table class="reservation-table">
-            <thead>
-                <tr>
-                    <th>ID de Reserva</th>
-                    <th>Espacio</th>
-                    <th>Inicio</th>
-                    <th>Fin</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for reservation in reservations %}
-                <tr>
-                    <td>{{ reservation.id }}</td>
-                    <td>{{ reservation.space_number }}</td>
-                    <td>{{ reservation.start_time }}</td>
-                    <td>{{ reservation.end_time }}</td>
-                    <td>
-                        {% if user_role == "user" %}
-                        <form action="/cancel_reservation/{{ reservation.id }}" method="post" style="display:inline;">
-                            <button type="submit" class="cancel-button" onclick="return confirm('¿Cancelar esta reserva?')">Cancelar</button>
-                        </form>
-                        {% elif user_role == "admin" %}
-                        <form action="/delete_reservation/{{ reservation.id }}" method="post" style="display:inline;">
-                            <button type="submit" class="delete-button" onclick="return confirm('¿Eliminar esta reserva?')">Eliminar</button>
-                        </form>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Formulario de Nueva Reserva -->
-    <div class="form-section">
-        <h2>Nueva Reserva</h2>
-        <form action="/create_reservation" method="post">
-            <label for="space">Espacio Disponible:</label>
-            <select name="space" id="space">
+        <form method="post" action="{{ url_for('create_reservation') }}">
+            <label for="space">Número de Espacio:</label>
+            <select name="space_number" id="space">
                 {% for space in available_spaces %}
-                <option value="{{ space.space_number }}">{{ space.space_number }} (Piso {{ space.floor }})</option>
+                    <option value="{{ space.space_number }}">{{ space.space_number }} (Piso {{ space.floor }})</option>
                 {% endfor %}
             </select>
-
-            <label for="start_time">Hora de Inicio:</label>
-            <input type="datetime-local" name="start_time" id="start_time" required>
-
-            <label for="end_time">Hora de Fin:</label>
-            <input type="datetime-local" name="end_time" id="end_time" required>
-
-            <button type="submit" class="reserve-button">Reservar</button>
+            <button type="submit">Reservar</button>
         </form>
-    </div>
-</div>
 
+        <h2>Reservas Activas</h2>
+        <ul>
+            {% for reservation in user_reservations %}
+                <li>Espacio: {{ reservation.space_number }}, Inicio: {{ reservation.start_time }}, Fin: {{ reservation.end_time }}</li>
+            {% endfor %}
+        </ul>
+    </main>
 </body>
 </html>
