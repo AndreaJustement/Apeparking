@@ -1,68 +1,55 @@
-from fastapi import Depends, HTTPException, status
-from jose import JWTError, jwt
-from bson import ObjectId
-from app.core.config import settings
-from app.db.mongodb import get_database
-from pymongo.database import Database
+from jose import jwt, JWTError
+from fastapi import Depends, HTTPException, Request
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import Request
-from app.core.config import USE_ADVANCED_SECURITY
-# Configuración de OAuth2 para la autenticación
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+from app.core.config import settings
+from passlib.context import CryptContext
+from datetime import datetime, timedelta
 
-# Función para obtener el usuario actual a partir del token JWT
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Database = Depends(get_database)):
-   if not USE_ADVANCED_SECURITY:  
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="No se pudieron validar las credenciales",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+# Configuración de hashing
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-    # Remover "Bearer " si está presente en el token
-    if "Bearer " in token:
-        token = token.replace("Bearer ", "")
+# Verificar contraseñas
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+# Crear hash de contraseñas
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+# Crear token de acceso
+def create_access_token(data: dict, expires_delta: timedelta = None):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + expires_delta if expires_delta else datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return encoded_jwt
+
+# Obtener usuario actual desde el token
+async def get_current_user(request: Request, token: str = Depends(oauth2_scheme)):
+    if not token:
+        token = request.cookies.get("access_token")
+        if not token:
+            raise HTTPException(status_code=401, detail="No autenticado")
 
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         user_id: str = payload.get("sub")
         role: str = payload.get("role", "cliente")
-        print(f"ID de usuario: {user_id}, Rol: {role}")
-
         if user_id is None:
-            raise credentials_exception
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return {"user_id": user_id, "role": role}
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Token inválido")
 
-        # Convierte el user_id en ObjectId y verifica si el usuario existe
-        user = await db["users"].find_one({"_id": ObjectId(user_id)})
-        if user is None:
-            raise credentials_exception
-        
-        # Agrega el rol al diccionario del usuario para futuras verificaciones
-        user["rol"] = role
-        return user
-    except JWTError as e:
-        print(f"Error de JWT: {e}")
-        raise credentials_exception
+# Verificar si el usuario es un cliente
+async def is_user(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "cliente":
+        raise HTTPException(status_code=403, detail="No tienes acceso a esta funcionalidad")
+    return current_user
 
-async def is_user(user: dict = Depends(get_current_user)):
-  if USE_ADVANCED_SECURITY:  
-    if "rol" not in user or user["rol"] != "cliente":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tienes permisos de usuario estándar"
-        )
-    return user
-
-async def is_admin(user: dict = Depends(get_current_user)):
-   if USE_ADVANCED_SECURITY: 
-    if user.get("rol") != "admin":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tienes permisos de administrador"
-        )
-    return user
-
-#register
-
-async def register_user(user_data: dict, db: Database):
-    await db["users"].insert_one(user_data)
+# Verificar si el usuario es administrador
+async def is_admin(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="No tienes acceso a esta funcionalidad")
+    return current_user

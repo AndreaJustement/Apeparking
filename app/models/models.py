@@ -25,7 +25,8 @@ class ParkingSpace(BaseModel):
 class Payment(BaseModel):
     reservation_id: ObjectId
     amount: float
-    payment_method: str
+    payment_method: str  
+    transaction_id: str  
     status: str
     payment_date: datetime
 

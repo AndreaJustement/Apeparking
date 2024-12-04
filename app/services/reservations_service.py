@@ -1,52 +1,100 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from bson import ObjectId
-from app.db.mongodb import db
-from pymongo.errors import PyMongoError
-from app.security.dependencies import get_current_user, is_admin
-from motor.motor_asyncio import AsyncIOMotorDatabase
+from fastapi import HTTPException, Depends
+from app.db.mongodb import get_database
+from app.db.redis import r
+import json
 
-async def reservar_espacio(user_id: str, parking_space_id: str, start_time: datetime, end_time: datetime):
-    try:
-        # Convertir IDs a ObjectId
-        user_id = ObjectId(user_id)
-        parking_space_id = ObjectId(parking_space_id)
 
-        # Lógica para reservar un espacio de estacionamiento
-        reserva_expiracion = datetime.utcnow() + timedelta(minutes=15)  # Cambiado a UTC
-        nueva_reserva = {
+class ReservationService:
+    def __init__(self, db, redis_client):
+        self.db = db
+        self.redis_client = redis_client
+
+    # Mapeo de sensores a espacios
+    sensor_to_space_map = {
+        "sensor1": {"space": "A1", "floor": 1},
+        "sensor2": {"space": "A2", "floor": 1},
+        "sensor3": {"space": "B1", "floor": 2},
+        "sensor4": {"space": "B2", "floor": 2},
+        "sensor5": {"space": "B3", "floor": 2},
+    }
+
+    # Asignar espacio disponible desde sensores
+    async def assign_space_from_sensor(self):
+        for sensor, details in self.sensor_to_space_map.items():
+            sensor_data = self.redis_client.get(sensor)
+            if sensor_data and json.loads(sensor_data).get("estado") == 0:  # Libre
+                # Verifica en la BD si el espacio no está reservado
+                space = await self.db["parking_spaces"].find_one(
+                    {"espacio": details["space"], "estado": "disponible"}
+                )
+                if space:
+                    return details
+        raise HTTPException(
+            status_code=400, detail="No hay espacios disponibles en este momento"
+        )
+
+    # Crear reserva
+    async def create_reservation(self, user_id: str):
+        try:
+            user_id = ObjectId(user_id)
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid user ID format")
+
+        # Verificar existencia del usuario
+        user = await self.db["users"].find_one({"_id": user_id})
+        if not user:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+        # Asignar espacio disponible
+        assigned_space = await self.assign_space_from_sensor()
+
+        # Crear reserva
+        reservation = {
             "user_id": user_id,
-            "parking_space_id": parking_space_id,
-            "start_time": start_time,
-            "end_time": end_time,
-            "status": "activa",
-            "reservation_expiration": reserva_expiracion
+            "space_number": assigned_space["space"],
+            "floor": assigned_space["floor"],
+            "start_time": datetime.now(timezone.utc),
+            "end_time": datetime.now(timezone.utc) + timedelta(hours=1),
+            "status": "activo",
+        }
+        result = await self.db["reservations"].insert_one(reservation)
+
+        # Actualizar estado del sensor y espacio
+        self.redis_client.set(
+            f"sensor{assigned_space['space']}", json.dumps({"estado": 1})
+        )
+        await self.db["parking_spaces"].update_one(
+            {"espacio": assigned_space["space"]}, {"$set": {"estado": "ocupado"}}
+        )
+
+        return {
+            "message": f"Reserva creada en espacio {assigned_space['space']} (Piso {assigned_space['floor']})",
+            "reservation_id": str(result.inserted_id),
         }
 
-        # Verificar que el espacio esté disponible antes de reservar
-        espacio = await db.parking_spaces.find_one({"_id": parking_space_id})
-        if espacio and espacio["estado"] == "disponible":
-            # Insertar nueva reserva y actualizar el espacio
-            await db.reservations.insert_one(nueva_reserva)
-            await db.parking_spaces.update_one({"_id": parking_space_id}, {"$set": {"estado": "reservado"}})
-            return {"msg": "Reserva creada con éxito"}
-        else:
-            return {"error": "El espacio no está disponible para reservar"}
-    except PyMongoError as e:
-        # Manejar cualquier error relacionado con MongoDB
-        return {"error": f"Error al crear la reserva: {str(e)}"}
+    # Cancelar reserva
+    async def cancel_reservation(self, reservation_id: str):
+        try:
+            reservation_id = ObjectId(reservation_id)
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid reservation ID format")
 
-async def liberar_espacio_si_reserva_expira():
-    try:
-        # Lógica para liberar un espacio si la reserva expira
-        reservas_expiradas = await db.reservations.find({
-            "status": "activa",
-            "reservation_expiration": {"$lt": datetime.utcnow()}  # Cambiado a UTC
-        }).to_list(100)
+        # Verificar que la reserva existe
+        reservation = await self.db["reservations"].find_one({"_id": reservation_id})
+        if not reservation:
+            raise HTTPException(status_code=404, detail="Reserva no encontrada")
 
-        for reserva in reservas_expiradas:
-            # Actualizar el estado del espacio y de la reserva
-            await db.parking_spaces.update_one({"_id": reserva['parking_space_id']}, {"$set": {"estado": "disponible"}})
-            await db.reservations.update_one({"_id": reserva['_id']}, {"$set": {"status": "cancelada"}})
-    except PyMongoError as e:
-        # Manejar cualquier error relacionado con MongoDB
-        print(f"Error al liberar las reservas expiradas: {e}")
+        # Eliminar reserva
+        await self.db["reservations"].delete_one({"_id": reservation_id})
+
+        # Liberar espacio en Redis y BD
+        space_number = reservation["space_number"]
+        sensor_key = f"sensor{space_number}"
+        self.redis_client.set(sensor_key, json.dumps({"estado": 0}))
+        await self.db["parking_spaces"].update_one(
+            {"espacio": space_number}, {"$set": {"estado": "disponible"}}
+        )
+
+        return {"message": "Reserva cancelada"}

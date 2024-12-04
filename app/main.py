@@ -1,14 +1,35 @@
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
+from starlette.middleware.base import BaseHTTPMiddleware
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
 
 # --------------------------------------
-# Importaciones y Configuración del Sistema
+# Crear la aplicación FastAPI
 # --------------------------------------
-import sys
-import os
-#sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+app = FastAPI(debug=True)
+
+# Middleware para manejar CORS
+class SimpleCORSMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        return response
+
+# Añadir el middleware
+app.add_middleware(SimpleCORSMiddleware)
+
+# --------------------------------------
+# Montar archivos estáticos y templates
+# --------------------------------------
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+templates = Jinja2Templates(directory="app/templates")
 
 # --------------------------------------
 # Importar Routers
@@ -21,40 +42,21 @@ from app.routers.sensors.sensor_router import router as sensor_router
 from app.routers.reservation_router import router as reservation_router
 from app.routers.payments_router import router as payments_router
 
-
 # --------------------------------------
-# Crear la aplicación FastAPI
+# Incluir Routers
 # --------------------------------------
-app = FastAPI(debug=True)
-
-# --------------------------------------
-# Montar Archivos Estáticos y Templates
-# --------------------------------------
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-templates = Jinja2Templates(directory="app/templates")
-
-# --------------------------------------
-# Importar Dependencias y Servicios de BD
-# --------------------------------------
-from app.db.redis import r as redis
-from app.db.initialize_db import initialize_db
-
-# --------------------------------------
-# Incluir Routers con Prefijos y Etiquetas
-# --------------------------------------
-
-app.include_router(auth_router, tags=["Auth"])
-app.include_router(dashboard_router, tags=["Dashboard"])
+app.include_router(auth_router)
+app.include_router(dashboard_router, prefix="/dashboard")
 app.include_router(admin_router, prefix="/admin", tags=["Admin"])
 app.include_router(reservation_router, tags=["Reservation"])
 app.include_router(parking_router, tags=["Parking"])
-app.include_router(sensor_router, prefix="/sensors", tags=["Sensors"])
+app.include_router(sensor_router, prefix="/sensors")
 app.include_router(payments_router, tags=["Payments"])
 
 # --------------------------------------
 # Rutas Generales
 # --------------------------------------
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
@@ -69,7 +71,41 @@ async def logout():
     return response
 
 # --------------------------------------
-# Depuración: Imprimir Rutas Activas
+# Rutas de Prueba de Conexión
 # --------------------------------------
-for route in app.routes:
-    print(f"Path: {route.path} - Name: {route.name}")
+@app.get("/test-db")
+async def test_db():
+    """
+    Prueba la conexión con la base de datos MongoDB.
+    """
+    try:
+        from app.db.mongodb import get_database
+        db = await get_database()
+        collections = await db.list_collection_names()
+        return {"status": "success", "collections": collections}
+    except Exception as e:
+        return {"status": "error", "details": str(e)}
+
+@app.get("/test-redis")
+async def test_redis():
+    """
+    Prueba la conexión con Redis.
+    """
+    try:
+        from app.db.redis import r as redis
+        redis.set("test_key", "test_value")
+        value = redis.get("test_key")
+        return {"status": "success", "value": value.decode("utf-8")}
+    except Exception as e:
+        return {"status": "error", "details": str(e)}
+
+# --------------------------------------
+# Depuración: Mostrar Rutas Activas
+# --------------------------------------
+@app.on_event("startup")
+async def show_routes():
+    """
+    Mostrar todas las rutas activas al iniciar la aplicación.
+    """
+    for route in app.routes:
+        print(f"Path: {route.path} - Name: {route.name}")

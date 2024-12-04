@@ -1,7 +1,7 @@
 from datetime import datetime
 from bson import ObjectId
 from app.security.dependencies import get_current_user, is_admin
-from pymongo.database import Database
+from app.db.mongodb import get_database
 from typing import Optional
 
 class AdminAuditLog:

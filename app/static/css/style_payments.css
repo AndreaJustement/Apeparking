@@ -1,82 +1,118 @@
-/* Estilos para la página de pagos */
-.payment-container {
-    width: 90%;
-    max-width: 600px;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-image: url('/static/images/fondo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    color: #003366;
 }
 
-h1 {
-    font-size: 2em;
-    color: #333;
-}
-
-.payment-section, .history-section {
-    margin-top: 30px;
-    padding: 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-}
-
-h2 {
-    font-size: 1.5em;
-    color: #333;
-}
-
-p {
-    font-size: 1em;
-    color: #666;
-}
-
-.reservation-details {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.reservation-details p {
-    margin: 5px 0;
-}
-
-.payment-button {
-    background-color: #3498db;
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #003366;
+    padding: 15px 30px;
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
+    font-size: 18px;
 }
 
-.payment-button:hover {
-    background-color: #2980b9;
+.navbar .logo {
+    display: flex;
+    align-items: center;
 }
 
-/* Estilos para el historial de pagos */
-.payment-history {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
+.navbar .logo img {
+    height: 40px;
+    margin-right: 10px;
 }
 
-.payment-history th, .payment-history td {
-    padding: 10px;
-    border: 1px solid #e0e0e0;
+.navbar nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 600;
+}
+
+.navbar nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    width: 95%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 25px;
     text-align: left;
 }
 
-.payment-history th {
-    background-color: #f5f5f5;
-    color: #333;
+.card h2 {
+    color: #003366;
+    font-size: 22px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ff6600;
+    display: inline-block;
+    padding-bottom: 5px;
 }
 
-.payment-history td {
+.card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card li {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card li form {
+    margin: 0;
+}
+
+.card li button.btn-primary {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.card li button.btn-primary:hover {
+    background-color: #cc5200;
+}
+
+footer {
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 20px;
+    background-color: #f1f1f1;
+    font-size: 14px;
     color: #666;
+    border-radius: 0 0 10px 10px;
 }
-

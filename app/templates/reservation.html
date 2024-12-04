@@ -3,41 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservas del Usuario</title>
-    <link rel="stylesheet" href="/static/css/style_user_dashboard.css">
+    <title>Reservas - ApeParking</title>
+    <link rel="stylesheet" href="/static/css/reservation.css">
 </head>
 <body>
     <header class="header">
-        <div>
-            <img src="/static/images/logo.png" alt="Logo">
+        <div class="logo-container">
+            <img src="/static/images/logo.png" alt="Logo de ApeParking">
             <span class="logo-text">ApeParking</span>
         </div>
         <nav>
-            <a href="{{ url_for('user_dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('view_reservations_page', user_id=user_id) }}">Ver Reservas</a>
-            <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Cerrar Sesión</a>
         </nav>
     </header>
 
     <main>
-        <h1>Reservas del Usuario</h1>
+        <h1>Reservas</h1>
 
-        <form method="post" action="{{ url_for('create_reservation') }}">
-            <label for="space">Número de Espacio:</label>
-            <select name="space_number" id="space">
-                {% for space in available_spaces %}
-                    <option value="{{ space.space_number }}">{{ space.space_number }} (Piso {{ space.floor }})</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Reservar</button>
-        </form>
+        <!-- Mostrar mensaje de confirmación -->
+        {% if message %}
+            <div class="confirmation-message">
+                <p>{{ message }}</p>
+            </div>
+        {% endif %}
 
-        <h2>Reservas Activas</h2>
-        <ul>
-            {% for reservation in user_reservations %}
-                <li>Espacio: {{ reservation.space_number }}, Inicio: {{ reservation.start_time }}, Fin: {{ reservation.end_time }}</li>
-            {% endfor %}
-        </ul>
+        <!-- Sección de Espacios Disponibles -->
+        <section>
+            <h2>Espacios disponibles</h2>
+            {% if available_spaces %}
+                <form method="post" action="/reservations/">
+                    <label for="space">Selecciona un espacio:</label>
+                    <select name="space_number" id="space">
+                        {% for space in available_spaces %}
+                            <option value="{{ space.espacio }}">
+                                Espacio {{ space.espacio }} (Piso {{ space.piso }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                    <button type="submit">Reservar</button>
+                </form>
+            {% else %}
+                <p>No hay espacios disponibles en este momento.</p>
+            {% endif %}
+        </section>
+
+        <!-- Sección de Reservas Activas -->
+        <section>
+            <h2>Mis Reservas</h2>
+            {% if reservations %}
+                <ul>
+                    {% for reservation in reservations %}
+                        <li>
+                            <strong>Espacio:</strong> {{ reservation.space_number }}<br>
+                            <strong>Inicio:</strong> {{ reservation.start_time.strftime('%d/%m/%Y %H:%M') }}<br>
+                            <strong>Estado:</strong> {{ reservation.status }}
+                            <form method="post" action="/reservations/{{ reservation._id }}">
+                                <input type="hidden" name="_method" value="delete">
+                                <button type="submit">Cancelar</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No tienes reservas activas.</p>
+            {% endif %}
+        </section>
     </main>
 </body>
 </html>
+

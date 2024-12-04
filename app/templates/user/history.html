@@ -3,43 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial</title>
-    <link rel="stylesheet" href="/static/css/global.css">
-    <link rel="stylesheet" href="/static/css/history.css">
+    <title>Historial de Reservas</title>
+    <link rel="stylesheet" href="/static/css/style_history.css">
 </head>
 <body>
-    <!-- Encabezado fijo -->
     <header class="header">
-        <div class="logo">
-            <img src="/static/images/logo.png" alt="Logo" class="logo-icon">
-            <div class="logo-text">ApeParking</div>
+        <div class="logo-container">
+            <img src="/static/images/logo.png" alt="Logo de ApeParking">
+            <span class="logo-text">ApeParking</span>
         </div>
         <nav>
-            <ul>
-                <li><a href="/reservations">Reservas</a></li>
-                <li><a href="/user/payments">Pagos</a></li>
-                <li><a href="/user/history">Historial</a></li>
-                <li><a href="/logout">Cerrar sesión</a></li>
-            </ul>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Cerrar Sesión</a>
         </nav>
     </header>
 
     <main>
-        <section class="history-container">
-            <h1>Historial de Actividades</h1>
-            <p>Aquí puedes revisar tus reservas y actividades previas.</p>
-
-            <div class="history-list">
-                {% for item in history %}
-                    <div class="history-item">
-                        <h3>{{ item.title }}</h3>
-                        <p>{{ item.description }}</p>
-                        <p><small>Fecha: {{ item.date }}</small></p>
-                    </div>
-                {% else %}
-                    <p>No tienes actividades en el historial.</p>
-                {% endfor %}
-            </div>
+        <h1>Historial de Reservas</h1>
+        <section>
+            {% if history %}
+                <ul>
+                    {% for item in history %}
+                        <li>
+                            <strong>Espacio:</strong> {{ item.parking_space_id }} <br>
+                            <strong>Inicio:</strong> {{ item.start_time }} <br>
+                            <strong>Fin:</strong> {{ item.end_time if item.end_time else 'No definido' }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No tienes reservas anteriores.</p>
+            {% endif %}
         </section>
     </main>
 </body>

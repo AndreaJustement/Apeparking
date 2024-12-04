@@ -1,16 +1,12 @@
-USE_ADVANCED_SECURITY = False
-import os
-from dotenv import load_dotenv
-from fastapi.templating import Jinja2Templates
+from pydantic import BaseSettings
 
-load_dotenv()  # Cargar las variables del archivo .env
-templates = Jinja2Templates(directory="app/templates")
+class Settings(BaseSettings):
+    DATABASE_URL: str
+    DATABASE_NAME: str = "ape_parking_db"
+    REDIS_HOST: str = "redis"
+    REDIS_PORT: int = 6379
 
-class Settings:
-    SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey123")
-    DATABASE_URL = os.getenv("DATABASE_URL", "mongodb://localhost:27017")
-    REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
-    ALGORITHM = os.getenv("ALGORITHM", "HS256")
-    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
+    class Config:
+        env_file = ".env"
 
 settings = Settings()

@@ -1,56 +1,62 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagos</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='css/global.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='css/style_payments.css') }}">
+    <title>Gestión de Pagos</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/style_payments.css">
 </head>
 <body>
-    <div class="payment-container">
-        <h1>Pagos</h1>
-        <p>Realiza el pago de tus reservas pendientes y consulta tu historial de pagos.</p>
-
-        <!-- Sección para realizar el pago de reservas pendientes -->
-        <div class="payment-section">
-            <h2>Realizar Pago</h2>
-            <p>Tienes una reserva pendiente de pago:</p>
-            <div class="reservation-details">
-                <p><strong>Reserva:</strong> Estacionamiento Barcelona, Centro</p>
-                <p><strong>Fecha:</strong> 17 de Octubre, 2024</p>
-                <p><strong>Total a pagar:</strong> 10,00 €</p>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <img src="/static/images/logo.png" alt="Logo ApeParking">
+                <span>ApeParking</span>
             </div>
-            <form action="/make-payment" method="post">
-                <button type="submit" class="payment-button">Pagar Ahora</button>
-            </form>
+            <nav>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/user/profile">Perfil</a>
+                <a href="/logout">Cerrar Sesión</a>
+            </nav>
         </div>
-
-        <!-- Sección de historial de pagos -->
-        <div class="history-section">
+    </header>
+    <main>
+        <section class="card">
+            <h2>Reservas Pendientes de Pago</h2>
+            {% if pending_reservations %}
+                <ul>
+                {% for reservation in pending_reservations %}
+                    <li>
+                        <span>Reserva ID: {{ reservation._id }} - Monto estimado: {{ reservation.cost or "Pendiente" }}</span>
+                        <form action="/payments/process" method="post">
+                            <input type="hidden" name="reservation_id" value="{{ reservation._id }}">
+                            <button type="submit" class="btn-primary">Procesar Pago</button>
+                        </form>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay reservas pendientes de pago.</p>
+            {% endif %}
+        </section>
+        <section class="card">
             <h2>Historial de Pagos</h2>
-            <table class="payment-history">
-                <thead>
-                    <tr>
-                        <th>Reserva</th>
-                        <th>Fecha de Pago</th>
-                        <th>Monto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Estacionamiento Barcelona, Centro</td>
-                        <td>12 de Octubre, 2024</td>
-                        <td>15,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Estacionamiento Barcelona, Norte</td>
-                        <td>5 de Octubre, 2024</td>
-                        <td>10,00 €</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+            {% if payment_history %}
+                <ul>
+                {% for payment in payment_history %}
+                    <li>
+                        Pago ID: {{ payment._id }} - Monto: {{ payment.amount }} - Fecha: {{ payment.payment_date }}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay pagos registrados.</p>
+            {% endif %}
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 ApeParking. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>

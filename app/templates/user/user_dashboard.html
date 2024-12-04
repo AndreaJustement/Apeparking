@@ -15,9 +15,10 @@
         </div>
         <nav>
             <ul>
-                <li><a href="/reservations">Reservas</a></li>
-                <li><a href="/user/payments">Pagos</a></li>
-                <li><a href="/user/history">Historial</a></li>
+                <li><a href="/dashboard/profile?user_id={{ user_id }}">Perfil</a></li>
+                <li><a href="/reservations/?user_id={{ user["_id"] }}">Reservas</a></li>
+                <li><a href="/user/payments?user_id={{ user_id }}">Pagos</a></li>
+                <li><a href="/history?user_id={{ user_id }}">Historial</a></li>
                 <li><a href="/logout">Cerrar sesión</a></li>
             </ul>
         </nav>
@@ -25,24 +26,23 @@
     
     <!-- Contenedor principal del Dashboard -->
     <main class="dashboard-container">
-        <h1>Bienvenido a tu Dashboard</h1>
-        <p class="description">Aquí puedes gestionar tus reservas, pagos y datos de usuario.</p>
-        
+       <h1>Bienvenido, {{ user["name"] }}</h1>
         <div class="card-container">
             <div class="card">
+                <h2>Perfil</h2>
+                <a href="/dashboard/profile?user_id={{ user_id }}" class="button">Ver Perfil</a>
+            </div>
+            <div class="card">
                 <h2>Reservas</h2>
-                <p>Gestiona tus reservas de parking de manera fácil y rápida.</p>
-                <a href="/reservations" class="button">Ver Reservas</a>
+                <a href="/reservations/?user_id={{ user_id }}" class="button">Ver Reservas</a>
             </div>
             <div class="card">
                 <h2>Pagos</h2>
-                <p>Revisa tus pagos realizados y realiza nuevos pagos de forma segura.</p>
-                <a href="/payments" class="button">Ver Pagos</a>
+                <a href="/user/payments?user_id={{ user_id }}" class="button">Ver Pagos</a>
             </div>
             <div class="card">
-                <h2>Perfil</h2>
-                <p>Actualiza tu información personal y preferencias.</p>
-                <a href="/profile" class="button">Ver Perfil</a>
+                <h2>Historial</h2>
+                <a href="/history?user_id={{ user_id }}" class="button">Ver Historial</a>
             </div>
         </div>
     </main>

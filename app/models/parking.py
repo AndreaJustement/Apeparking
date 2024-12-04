@@ -2,12 +2,12 @@ from pydantic import BaseModel
 from typing import Optional
 from bson import ObjectId
 
+from pydantic import BaseModel
+from typing import Optional
+
 class ParkingSpace(BaseModel):
-    id: Optional[ObjectId]       # ID único de MongoDB
-    floor: int                   # Piso donde se encuentra el espacio
-    space_number: str            # Identificador alfanumérico del espacio (ej. "A1", "A2")
-    sensor_id: str               # ID del sensor (ej. "sensor1")
-    
-    class Config:
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+    _id: str
+    floor: int
+    space_number: str
+    status: str  # "libre", "reservado", "ocupado"
+    sensor_id: Optional[str]  # Asociado al sensor

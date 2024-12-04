@@ -1,15 +1,20 @@
-from pydantic import BaseModel, Field
-from bson import ObjectId
+from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
 
 class User(BaseModel):
-    id: Optional[str] = Field(default_factory=lambda: str(ObjectId()), alias="_id")
-    email: str
-    nombre: str
-    contrasena: str
-    rol: str = "cliente"  # Por defecto cliente, pero puede ser 'admin'
+    id: Optional[str] = Field(alias="_id")  # MongoDB usa _id
+    email: EmailStr  # Email válido
+    nombre: str  # Nombre del usuario
+    contrasena: str  # Contraseña sin encriptar por ahora
+    rol: str = "cliente"  # Rol predeterminado
 
     class Config:
-        json_encoders = {
-            ObjectId: str
+        allow_population_by_field_name = True
+        schema_extra = {
+            "example": {
+                "email": "cliente@example.com",
+                "nombre": "Juan Pérez",
+                "contrasena": "123456",
+                "rol": "cliente"
+            }
         }
