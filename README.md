@@ -112,28 +112,7 @@ docker-compose logs -f
 docker-compose up -d --build
 ```
 
----
 
-## **Contribuciones**
 
-Si deseas contribuir al proyecto:
-1. Haz un fork del repositorio.
-2. Crea una rama para tu nueva funcionalidad:
-   ```bash
-   git checkout -b feature/nueva-funcionalidad
-   ```
-3. Realiza tus cambios y crea un commit:
-   ```bash
-   git commit -m "Añadida nueva funcionalidad"
-   ```
-4. Sube tus cambios:
-   ```bash
-   git push origin feature/nueva-funcionalidad
-   ```
-5. Crea un Pull Request en GitHub.
 
----
 
-## **Contacto**
-
-Si tienes alguna duda o problema con el proyecto, no dudes en contactarme en: **[Tu correo o GitHub](https://github.com/AndreaJustement)**.
